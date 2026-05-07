@@ -31,7 +31,15 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Spec-Driven Delivery: Plan references approved `spec.md` with prioritized stories,
+  measurable outcomes, and assumptions.
+- [ ] Independent Value Slices: Work is organized by story and each story has an
+  independent validation approach.
+- [ ] Verification-First: Changed behavior has executable verification evidence
+  (automated tests or documented manual validation where automation is not feasible).
+- [ ] Traceability by Default: Requirements map to plan decisions and to task categories.
+- [ ] Simplicity and Change Discipline: Added complexity/dependencies are justified in
+  Complexity Tracking.
 
 ## Project Structure
 

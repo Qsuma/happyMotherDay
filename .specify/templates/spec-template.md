@@ -126,3 +126,12 @@
 - [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
 - [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
 - [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+
+## Constitution Alignment *(mandatory)*
+
+- **CA-001 Story Independence**: Document how each user story can be validated and delivered
+  independently.
+- **CA-002 Verification Evidence**: Define expected verification per story (automated tests
+  preferred; manual validation steps allowed only when justified).
+- **CA-003 Traceability Notes**: List any requirement that needs explicit task-level
+  traceability attention in planning.
