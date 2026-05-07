@@ -1,5 +1,6 @@
 import { GreetingAnimation } from '../GreetingAnimation/GreetingAnimation';
 import { Gallery } from '../Gallery/Gallery';
+import { MessageForm } from '../MessageForm/MessageForm';
 import { GREETING_TEXT, GREETING_SUBTITLE } from '../../constants/greetingText';
 import { GALLERY_IMAGES } from '../../constants/galleryImages';
 import styles from './MothersDayPage.module.css';
@@ -30,10 +31,11 @@ export function MothersDayPage() {
           <Gallery images={GALLERY_IMAGES} />
         </section>
 
-        {/* Phase 5: Message Form (coming next) */}
-        {/* <section className={styles.section}>
+        {/* Phase 5: Message Form */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Tu Dedicatoria</h2>
           <MessageForm />
-        </section> */}
+        </section>
       </main>
 
       <footer className={styles.footer}>
