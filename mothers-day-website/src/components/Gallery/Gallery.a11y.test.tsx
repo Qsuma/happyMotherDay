@@ -93,10 +93,6 @@ describe('Gallery Accessibility (T037-T039)', () => {
 
       // Each image should be focusable (via parent container or direct tabindex)
       for (const img of images) {
-        const focusableParent =
-          img.parentElement?.getAttribute('tabindex') !== null ||
-          img.getAttribute('tabindex') !== null;
-
         // Image or parent should be focusable
         expect(
           img.getAttribute('tabindex') || img.parentElement?.getAttribute('tabindex'),
@@ -121,7 +117,7 @@ describe('Gallery Accessibility (T037-T039)', () => {
     });
 
     it('images should have alt text that describes content', async () => {
-      const { container } = render(<Gallery images={mockImages} />);
+      render(<Gallery images={mockImages} />);
 
       const images = screen.getAllByRole('img');
       expect(images.length).toBe(mockImages.length);
