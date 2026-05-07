@@ -73,26 +73,12 @@ test.describe('GreetingAnimation E2E', () => {
     // Get greeting element
     const greetingElement = await page.locator('[class*="greeting"]').first();
 
-    // Check that animation class is NOT applied (reduced motion)
-    const animationClass = await greetingElement.getAttribute('class');
-    
     // Final state should be immediately visible (no animation delay)
     await expect(greetingElement).toBeVisible({ timeout: 500 });
 
     // Verify text is present and readable
     const greetingText = await greetingElement.textContent();
     expect(greetingText).toContain('Feliz Día de las Madres');
-
-    // Verify no animation is running by checking computed animation-duration
-    const computedStyle = await page.evaluate(() => {
-      const element = document.querySelector('[class*="greeting"]');
-      if (!element) return null;
-      const style = window.getComputedStyle(element);
-      return {
-        animationDuration: style.animationDuration,
-        animationName: style.animationName,
-      };
-    });
 
     // Animation duration should be 0s or animation should not be running when reduced-motion is set
     console.log('✅ Reduced motion: greeting visible immediately without animation');

@@ -11,12 +11,15 @@ import { useEffect, useState } from 'react';
  * return <div animate={!prefersReducedMotion && {opacity: 1}} />;
  */
 export function useAnimationPreference(): boolean {
-  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(() => {
+    // Initialize state from matchMedia query
+    if (typeof window === 'undefined') return false;
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  });
 
   useEffect(() => {
     // Check user's motion preference
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReducedMotion(mediaQuery.matches);
 
     // Listen for changes
     const handleChange = (e: MediaQueryListEvent) => {

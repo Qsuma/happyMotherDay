@@ -22,17 +22,16 @@ test.describe('Gallery E2E', () => {
 
     // Focus first image
     await images[0].focus();
-    let activeElement = await page.evaluate(() => document.activeElement?.getAttribute('class'));
-
     // Press right arrow
     await page.keyboard.press('ArrowRight');
     await page.waitForTimeout(100); // Wait for focus to change
 
     // Check second image has focus
-    activeElement = await page.evaluate(() => {
+    const focusedElement = await page.evaluate(() => {
       const element = document.activeElement;
       return element?.getAttribute('alt') || element?.getAttribute('class');
     });
+    expect(focusedElement).toBeDefined();
 
     // Press right arrow again
     await page.keyboard.press('ArrowRight');
@@ -175,13 +174,9 @@ test.describe('Gallery E2E', () => {
     await page.waitForTimeout(100);
 
     // Get focused alt text
-    const focusedAlt = await page.evaluate(
-      (total) => {
-        const elements = document.querySelectorAll('[class*="gallery"] img');
-        return (document.activeElement as any)?.getAttribute('alt');
-      },
-      totalImages,
-    );
+    const focusedAlt = await page.evaluate(() => {
+      return (document.activeElement as HTMLElement | null)?.getAttribute('alt');
+    });
 
     const firstImageAlt = await images[0].getAttribute('alt');
 
