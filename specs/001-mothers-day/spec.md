@@ -40,11 +40,11 @@ A visitor can browse through a curated gallery of Mother's Day greeting images. 
 **Acceptance Scenarios**:
 
 1. **Given** gallery loads with 6+ images, **When** page renders, **Then** all images load with lazy loading (visible images first)
-2. **Given** user is viewing gallery, **When** user clicks next/prev button, **Then** gallery smoothly transitions to next/prev image with fade effect
-3. **Given** user is on mobile, **When** gallery renders, **Then** display is 1 column with touch-friendly buttons (min 44px height)
+2. **Given** user is viewing gallery grid, **When** user presses arrow keys (left/right), **Then** focus moves to adjacent image in grid; at end of row/grid, focus wraps to beginning
+3. **Given** user is on mobile, **When** gallery renders, **Then** display is 1 column responsive grid with touch-friendly buttons (min 44px height)
 4. **Given** user is on desktop, **When** gallery renders, **Then** display is responsive grid (3 columns at 1024px, 4 columns at 1920px)
-5. **Given** user presses arrow keys, **When** on gallery, **Then** images navigate without page scrolling (preventDefault handled)
-6. **Given** image is being hovered/focused, **When** user sees image, **Then** visual indicator (border/shadow) highlights selected image
+5. **Given** user presses arrow keys, **When** navigating gallery, **Then** images receive visual focus indicator (border/shadow) and page does not scroll
+6. **Given** image is hovered or keyboard-focused, **When** user sees image, **Then** visual indicator (colored border or shadow) clearly highlights selected image
 
 ---
 
@@ -63,10 +63,10 @@ A visitor can write a personalized message or memory to accompany their greeting
 
 **Acceptance Scenarios**:
 
-1. **Given** message form is visible, **When** user types, **Then** character counter updates (e.g., "142 / 500")
-2. **Given** user has typed message, **When** user submits, **Then** message is saved to component state and doesn't disappear
-3. **Given** message is saved, **When** user toggles "Show with greeting", **Then** message displays below greeting on same page
-4. **Given** user types 500+ characters, **When** user continues typing, **Then** input stops accepting characters and shows warning
+1. **Given** message form is visible, **When** user types, **Then** character counter updates in real-time (e.g., "142 / 500")
+2. **Given** user has typed message and clicks "Save", **When** submission completes, **Then** message is saved to sessionStorage, form clears, and success message shows
+3. **Given** message is saved, **When** user toggles "Show message" checkbox, **Then** message displays in a dedicated section below the greeting (independent of gallery selection)
+4. **Given** user types 500+ characters, **When** user continues typing, **Then** input stops accepting characters at 500 and shows visual warning (red text/border)
 
 ---
 
@@ -83,14 +83,16 @@ A visitor can write a personalized message or memory to accompany their greeting
 
 - **FR-001**: Homepage MUST display animated greeting message on load with fade-in + slide animation
 - **FR-002**: Animation MUST complete within 2 seconds and NOT auto-loop indefinitely
-- **FR-003**: Gallery MUST display minimum 6 Mother's Day greeting images in responsive grid layout
-- **FR-004**: Gallery MUST support keyboard navigation (arrow keys: left/right, Tab for focus management)
-- **FR-005**: Gallery MUST support mouse/touch navigation (previous/next buttons, swipe on mobile)
+- **FR-003**: Gallery MUST display minimum 6 Mother's Day greeting images in responsive grid layout (1 col mobile, 3-4 cols desktop)
+- **FR-004**: Gallery MUST support keyboard navigation: arrow keys move focus left/right through images; at grid boundary, focus wraps to opposite end
+- **FR-005**: Gallery MUST support focus indicators: keyboard-focused or hovered image MUST show visual highlight (border or shadow)
 - **FR-006**: All images MUST lazy-load using `loading="lazy"` or Intersection Observer API
 - **FR-007**: Message input form MUST validate max 500 characters with real-time character counter
 - **FR-008**: Message input MUST be optional (can be skipped by user)
-- **FR-009**: Selected greeting image MUST remain highlighted/focused with visual indicator
-- **FR-010**: Component MUST respect user's `prefers-reduced-motion` setting (skip animations if true)
+- **FR-009**: Saved message MUST display in dedicated section below greeting when "Show message" toggle is enabled
+- **FR-010**: Message MUST persist in sessionStorage during current browser session; lost on refresh or close
+- **FR-011**: Component MUST respect user's `prefers-reduced-motion` setting (skip animations if true)
+- **FR-012**: Images that fail to load MUST show placeholder with "Retry" button instead of broken image icon
 
 ### Key Entities
 
@@ -118,11 +120,16 @@ A visitor can write a personalized message or memory to accompany their greeting
 
 - Images will be provided as JPEG/WebP files optimized for web (< 500 KB each)
 - No user authentication required (public greeting page)
-- Messages don't need backend storage—stored in browser sessionStorage for single session
+- **Gallery is grid layout** (not carousel): Multiple images visible simultaneously, keyboard/focus navigation through grid
+- **Gallery navigation wraps**: Pressing right arrow on last image loops to first; pressing left arrow on first image loops to last
+- **Message persistence**: Personalized messages stored in `sessionStorage`; persists during current browser session, lost on page refresh or browser close
+- Messages don't need backend storage—browser session storage only for single session
 - Browser support: modern browsers (Chrome, Firefox, Safari 12+, Edge 79+); mobile browsers (iOS Safari 12+, Android Chrome)
-- Animations can use Framer Motion or simple CSS animations (to be decided in plan.md)
+- Animations use CSS (no heavy library) for best performance
 - No external API calls needed for MVP (images and greeting content are static/imported)
 - User's `prefers-reduced-motion` can be detected via `window.matchMedia('(prefers-reduced-motion: reduce)')`
+- Failed image loads show placeholder + retry button (no broken image icon)
+- Gallery grid provides focus management via arrow key navigation; Tab key moves through form fields
 
 ## Constitution Alignment *(mandatory)*
 
@@ -149,3 +156,20 @@ Each story delivers user value:
 - Image paths should be centralized in `src/constants/galleryImages.ts`
 - Animation configuration (durations, easing) should be in `src/constants/animations.ts`
 - Ensure components accept props for all text/images (no hardcoding, supports future personalization)
+
+---
+
+## Clarifications
+
+### Session 2026-05-07
+
+Ambiguities resolved through focused Q&A to reduce implementation risk:
+
+- **Q: Gallery layout - Grid or Carousel?** → A: Grid view (multiple images visible, focus-based navigation)
+- **Q: Gallery navigation wrapping behavior?** → A: Circular wrapping (last image → first image on right arrow)
+- **Q: Message display location?** → A: Separate section below greeting, independent of gallery selection
+- **Q: Message persistence across page reloads?** → A: Session-only (`sessionStorage`), lost on refresh
+- **Q: Image load failure handling?** → A: Placeholder image + Retry button (non-blocking fallback)
+
+**Impact**: These clarifications prevent misaligned implementation. Gallery is focus-navigation grid (not carousel), message displays separately (not overlaid), persistence is session-based (simpler than localStorage).
+

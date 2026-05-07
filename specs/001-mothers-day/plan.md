@@ -6,8 +6,8 @@
 ## Summary
 
 Build an animated Mother's Day greeting website featuring:
-- **US1 (P1)**: Animated greeting that loads on homepage (Framer Motion for smooth animations)
-- **US2 (P1)**: Responsive image gallery with keyboard/touch navigation (React grid component)
+- **US1 (P1)**: Animated greeting that loads on homepage (CSS @keyframes animations)
+- **US2 (P1)**: Responsive image gallery with keyboard/touch navigation (CSS Grid layout)
 - **US3 (P2)**: Optional personalized message form (React form with character counter)
 
 All components follow React template-based architecture with TypeScript, co-located tests, and full accessibility compliance per constitution.
@@ -15,7 +15,7 @@ All components follow React template-based architecture with TypeScript, co-loca
 ## Technical Context
 
 **Language/Version**: TypeScript 5.x, React 18.x, Node.js 18 LTS  
-**Primary Dependencies**: React 18, React Router v6, Framer Motion (animations), TailwindCSS (styling)  
+**Primary Dependencies**: React 18, React Router v6 (if needed for routing)  
 **Storage**: Browser sessionStorage for user messages (no backend required for MVP)  
 **Testing**: Vitest + React Testing Library (unit/integration), Playwright (E2E), axe-core (accessibility)  
 **Target Platform**: Modern web browsers (desktop + mobile, iOS Safari 12+, Android Chrome latest 2 versions)  
@@ -41,7 +41,7 @@ All components follow React template-based architecture with TypeScript, co-loca
 - [x] **Independent Value Slices**: ✅ US1 (greeting) delivers value alone. US2 (gallery) adds value independently. US3 (message) optional enhancement. Each testable in isolation.
 - [x] **Verification-First**: ✅ Will use React Testing Library + Playwright E2E + axe-core for accessibility. 80%+ coverage target. See Testing Strategy below.
 - [x] **Traceability by Default**: ✅ All FR-### requirements map to user stories. Task structure will reference requirements by ID.
-- [x] **Simplicity and Change Discipline**: ✅ Using standard React patterns (no over-engineering). Framer Motion chosen over custom animations (reduces complexity). Single page app, no state management complexity beyond React Context.
+- [x] **Simplicity and Change Discipline**: ✅ Using standard React patterns (no over-engineering). CSS @keyframes chosen over animation libraries (reduces bundle size). CSS Modules for scoped styling. Single page app, no state management complexity beyond React Context.
 
 **Additional Checks specific to React Web stack**:
 - [x] **Technology Stack**: React 18 + TypeScript strict mode. ESLint + Prettier enforced. No controversial dependencies.
@@ -132,8 +132,8 @@ No additional complexity beyond standard React best practices:
 
 | Aspect | Decision | Why Simple | Alternatives Rejected |
 |--------|----------|-----------|----------------------|
-| Animations | Framer Motion + CSS | Proven library, handles `prefers-reduced-motion` out of box | Custom canvas/SVG animations (overkill for greeting) |
-| Styling | TailwindCSS (constitution-defined) | Utility-first, low overhead | CSS-in-JS would add bundle size |
+| Animations | CSS @keyframes only | Pure CSS, smallest bundle, `prefers-reduced-motion` via media query | Framer Motion (unnecessary dependency for simple animations) |
+| Styling | CSS Modules | Scoped by default, performant, no build overhead | Tailwind (adds utility-first complexity) or CSS-in-JS (adds bundle size) |
 | State Management | React Context API | Single feature, minimal state (message text + gallery index) | Redux/Zustand unnecessary at this scale |
 | Image Gallery | CSS Grid + React hooks | Native CSS Grid is responsive and fast | Carousel library would add unnecessary dependency |
 | Form Validation | React hook + controlled inputs | Lightweight, transparent | Form library (React Hook Form) overkill for 1 text field |
@@ -182,9 +182,7 @@ This feature is designed to be:
 ```json
 {
   "dependencies": {
-    "react": "^18.2.0",
-    "framer-motion": "^10.16.0",
-    "clsx": "^2.0.0"
+    "react": "^18.2.0"
   },
   "devDependencies": {
     "vitest": "^0.34.0",
