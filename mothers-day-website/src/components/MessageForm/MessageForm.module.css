@@ -1,0 +1,266 @@
+/**
+ * MessageForm Component Styles
+ * 
+ * Styling for message input form, character counter, and message display
+ * Mobile-first responsive design
+ */
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Label styling */
+.label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+/* Input field */
+.inputContainer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 16px;
+  font-size: 16px; /* Prevents iOS zoom on input */
+  font-family: inherit;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  outline: none;
+  transition: all 200ms ease;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.input:focus {
+  border-color: #667eea;
+  outline: 3px solid rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+}
+
+.input:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.input::placeholder {
+  color: #999;
+}
+
+/* Character counter */
+.counterContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #666;
+  aria-live: polite;
+}
+
+.counter {
+  font-weight: 500;
+  color: #667eea;
+}
+
+.counter.warning {
+  color: #ff9800; /* Orange when > 400 chars */
+}
+
+.counter.error {
+  color: #f44336; /* Red when at 500 chars */
+}
+
+.characterHint {
+  font-size: 11px;
+  color: #999;
+}
+
+/* Button group */
+.buttonGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.button {
+  flex: 1;
+  min-width: 120px;
+  min-height: 44px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.button:focus-visible {
+  outline: 3px solid #667eea;
+  outline-offset: 2px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Submit button */
+.submitButton {
+  background-color: #667eea;
+  color: white;
+}
+
+.submitButton:hover:not(:disabled) {
+  background-color: #5568d3;
+}
+
+/* Toggle button */
+.toggleButton {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 2px solid #ddd;
+}
+
+.toggleButton:hover:not(:disabled) {
+  background-color: #e0e0e0;
+  border-color: #ccc;
+}
+
+/* Message display section */
+.displayContainer {
+  margin-top: 20px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-left: 4px solid #667eea;
+  border-radius: 4px;
+  animation: slideIn 300ms ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .button:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .button:active:not(:disabled) {
+    transform: none;
+  }
+
+  .displayContainer {
+    animation: none;
+  }
+}
+
+.displayTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #667eea;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.messageText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  word-break: break-word;
+  white-space: pre-wrap;
+  margin-bottom: 12px;
+}
+
+.closeButton {
+  align-self: flex-start;
+  background-color: transparent;
+  color: #999;
+  border: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 200ms ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.closeButton:hover {
+  color: #333;
+}
+
+.closeButton:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+  .formContainer {
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .button {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .buttonGroup {
+    flex-direction: column;
+  }
+
+  .input {
+    font-size: 16px; /* Keep at 16px to prevent iOS zoom */
+  }
+
+  .displayContainer {
+    padding: 12px;
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .formContainer {
+    max-width: 100%;
+  }
+}
